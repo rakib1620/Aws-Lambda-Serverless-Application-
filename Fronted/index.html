@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ডেটা সাবমিশন ফর্ম</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 40px; line-height: 1.6; }
+        .form-container { max-width: 400px; margin: auto; }
+        input, textarea { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; }
+        button { width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>আপনার তথ্য জমা দিন</h2>
+        <input type="text" id="name" placeholder="আপনার নাম লিখুন">
+        <textarea id="feedback" placeholder="আপনার মতামত লিখুন" rows="4"></textarea>
+        <button onclick="sendData()">সাবমিট করুন</button>
+    </div>
+
+    <script>
+        async function sendData() {
+            const name = document.getElementById('name').value;
+            const feedback = document.getElementById('feedback').value;
+
+            // আপনার API Gateway URL
+            // আপনার API Gateway URL এ /myresource যোগ করুন
+             const apiUrl = 'https://srax773kwi.execute-api.us-east-1.amazonaws.com/prod/myresource';
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: name, feedback: feedback })
+                });
+
+                if (response.ok) {
+                    alert('সফলভাবে ডেটা জমা হয়েছে!');
+                    document.getElementById('name').value = '';         
+                    document.getElementById('feedback').value = '';
+                } else {
+                    alert('এরর হয়েছে: ' + response.statusText);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('সার্ভারে সমস্যা হয়েছে, আবার চেষ্টা করুন।');
+            }
+        }
+    </script>
+</body>
+</html>
